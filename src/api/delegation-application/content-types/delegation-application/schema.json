@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "delegation_applications",
+  "info": {
+    "singularName": "delegation-application",
+    "pluralName": "delegation-applications",
+    "displayName": "delegation-applications"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "delegationName": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "headChaperone": {
+      "type": "string"
+    },
+    "chaperone2": {
+      "type": "string"
+    },
+    "chaperone3": {
+      "type": "string"
+    },
+    "delegates": {
+      "type": "json"
+    },
+    "additionalEmail": {
+      "type": "email"
+    },
+    "institution": {
+      "type": "string"
+    },
+    "accommodation": {
+      "type": "boolean"
+    }
+  }
+}

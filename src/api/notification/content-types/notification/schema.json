@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "notifications",
+  "info": {
+    "singularName": "notification",
+    "pluralName": "notifications",
+    "displayName": "Notification ",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "emailSent": {
+      "type": "boolean",
+      "default": false
+    },
+    "Email": {
+      "type": "email"
+    },
+    "FirstName": {
+      "type": "string"
+    },
+    "Idname": {
+      "type": "biginteger"
+    },
+    "Destinations": {
+      "type": "string"
+    },
+    "startdate": {
+      "type": "string"
+    },
+    "enddate": {
+      "type": "string"
+    },
+    "month": {
+      "type": "string"
+    },
+    "year": {
+      "type": "string"
+    }
+  }
+}

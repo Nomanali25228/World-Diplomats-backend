@@ -1,0 +1,103 @@
+{
+  "kind": "collectionType",
+  "collectionName": "thirdnames",
+  "info": {
+    "singularName": "thirdname",
+    "pluralName": "thirdnames",
+    "displayName": "Empty-Form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "FirstName": {
+      "type": "string"
+    },
+    "MiddleName": {
+      "type": "string"
+    },
+    "LastName": {
+      "type": "string"
+    },
+    "Email": {
+      "type": "email"
+    },
+    "ReEnterEmail": {
+      "type": "email"
+    },
+    "PhoneNumber": {
+      "type": "biginteger"
+    },
+    "DateBirth": {
+      "type": "datetime"
+    },
+    "Address": {
+      "type": "string"
+    },
+    "City": {
+      "type": "string"
+    },
+    "ProvinceState": {
+      "type": "string"
+    },
+    "PostelCode": {
+      "type": "biginteger"
+    },
+    "NameOfTheInstitutionYouAttend": {
+      "type": "string"
+    },
+    "AnyDisabilities": {
+      "type": "string"
+    },
+    "HowDidYouGetToKnowAboutUs": {
+      "type": "string"
+    },
+    "WereYouProvidedWithAnyReferralCode": {
+      "type": "string"
+    },
+    "WhatExcitesYouTheMostAboutJoiningOurProgram": {
+      "type": "text"
+    },
+    "AnyThingElseThatYouWantToShare": {
+      "type": "text"
+    },
+    "Nationality": {
+      "type": "string"
+    },
+    "Gender": {
+      "type": "string"
+    },
+    "DoYouHaveAFoodpreference": {
+      "type": "string"
+    },
+    "WhatIsYourShirtSize": {
+      "type": "string"
+    },
+    "WhichUNCommitteeDoYouPreferForTheEvent": {
+      "type": "string"
+    },
+    "WhichCountryDoYouWantToRepresent": {
+      "type": "string"
+    },
+    "Residency": {
+      "type": "string"
+    },
+    "HaveYouAttendSimilarInternationalProgramsBefore": {
+      "type": "string"
+    },
+    "Destinations": {
+      "type": "string"
+    },
+    "blog_posts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::blog-post.blog-post",
+      "inversedBy": "thirdnames"
+    },
+    "customerId": {
+      "type": "string"
+    }
+  }
+}

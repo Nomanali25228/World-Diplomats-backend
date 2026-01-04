@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_delegates_delegates",
+  "info": {
+    "displayName": "delegate",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "whatIsYourShirtSize": {
+      "type": "string"
+    },
+    "doYouHaveAFoodpreference": {
+      "type": "string"
+    }
+  }
+}

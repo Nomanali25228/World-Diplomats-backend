@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fivenames",
+  "info": {
+    "singularName": "fivename",
+    "pluralName": "fivenames",
+    "displayName": "SaudiArabia-Form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "text"
+    },
+    "Email": {
+      "type": "email"
+    },
+    "PhoneNumber": {
+      "type": "biginteger"
+    },
+    "DateBirth": {
+      "type": "datetime"
+    },
+    "Institution": {
+      "type": "string"
+    },
+    "Nationality": {
+      "type": "string"
+    },
+    "Gender": {
+      "type": "string"
+    },
+    "DoYouHaveAFoodpreference": {
+      "type": "string"
+    },
+    "WhatIsYourShirtSize": {
+      "type": "string"
+    },
+    "Committee": {
+      "type": "string"
+    },
+    "CountryOfResidence": {
+      "type": "string"
+    },
+    "Destinations": {
+      "type": "string"
+    },
+    "blog_post": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::blog-post.blog-post"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "WhyDoYouWantToJoin": {
+      "type": "text"
+    },
+    "CountryDoYouWantToRepresent": {
+      "type": "string"
+    },
+    "registrationType": {
+      "type": "enumeration",
+      "enum": [
+        "single",
+        "group"
+      ]
+    },
+    "delegates": {
+      "type": "component",
+      "repeatable": true,
+      "component": "delegates.delegate"
+    },
+    "groupEmail": {
+      "type": "email"
+    }
+  }
+}
