@@ -5,7 +5,8 @@ module.exports = {
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const oneHourAgo = new Date(Date.now() - 1 * 60 * 1000)
+      const oneHourAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+
 
       const notifications = await strapi.db.query('api::notification.notification').findMany({
         where: {
@@ -179,9 +180,9 @@ module.exports = {
         const shepandumPlanId = 2;
         const zagatiyaPlanId = 3;
 
-        const basicUrl = `http://localhost:3000/${routePrefix}/${basicPlanId}?userid=${userId}`;
-        const shepandumUrl = `http://localhost:3000/${routePrefix}/${shepandumPlanId}?userid=${userId}`;
-        const zagatiyaUrl = `http://localhost:3000/${routePrefix}/${zagatiyaPlanId}?userid=${userId}`;
+        const basicUrl = `https://www.worlddiplomats.org/${routePrefix}/${basicPlanId}?userid=${userId}`;
+        const shepandumUrl = `https://www.worlddiplomats.org/${routePrefix}/${shepandumPlanId}?userid=${userId}`;
+        const zagatiyaUrl = `https://www.worlddiplomats.org/${routePrefix}/${zagatiyaPlanId}?userid=${userId}`;
 
         // Create the HTML content (kept for possible future usage)
         const htmlContent = `
@@ -471,12 +472,14 @@ module.exports = {
                     <table cellpadding="0" align="center" cellspacing="0" width="100%"
                       style="max-width:350px; margin-bottom:10px;">
                       <tr>
-                        <td align="center" style=" background:linear-gradient(90deg,#8c1537,#0b67c2);
-                         padding:19px; border-radius:10px;">
-                          <div style="font-size:20px; font-weight:bold; color:#fff; letter-spacing:1px;">
-                            CLICK HERE FOR THE T&C
-                          </div>
-                        </td>
+                       <td align="center" style="background:linear-gradient(90deg,#8c1537,#0b67c2); padding:19px; border-radius:10px;">
+  <a href="https://www.worlddiplomats.org/Terms&Conditions" target="_blank" style="text-decoration:none; display:block;">
+    <div style="font-size:20px; font-weight:bold; color:#fff; letter-spacing:1px;">
+      CLICK HERE FOR THE T&C
+    </div>
+  </a>
+</td>
+
                       </tr>
                     </table>
 
