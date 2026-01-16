@@ -5,7 +5,8 @@ module.exports = {
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const oneHourAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+      const oneHourAgo = new Date(Date.now() - 1 * 60 * 1000)
+
 
 
       const notifications = await strapi.db.query('api::notification.notification').findMany({
@@ -37,22 +38,37 @@ module.exports = {
 
       for (const [email, notifs] of Object.entries(emailGroups)) {
         const {
-          FirstName: userName = 'User',
+          FirstName: firstName,
+          Username: username,
+          isDelegation: delegationFlag,
           Idname: userId = '',
-          Destinations: destination = '',
+          Destinations: rawDestination = '',
           startdate: startdate = '',
           enddate: enddate = '',
           month: month = '',
           year: year = '',
- 
 
 
-  } = notifs[0] || {};
-  
+
+        } = notifs[0] || {};
+
+        const isDelegation = delegationFlag || false;
+        const userName = firstName || username || "Delegation";
+        const phoneNumber = "+447490344639";
+        const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}`;
+
+        // Trim destination to avoid whitespace mismatches
+        const destination = rawDestination ? rawDestination.trim() : '';
+        console.log(`Processing email for destination: "${destination}"`);
+
+        // Initialize variables with defaults
+        var desname = destination;
+        var country = destination.includes(',') ? destination.split(',')[1].trim() : destination;
+        var CityTour = '';
 
         if (destination == "Dubai, UAE") {
-          var desname = "Dubai, UAE";
-          var country = "UAE";
+          desname = "Dubai, UAE";
+          country = "UAE";
           // var date = "13<sup>th</sup> - 16<sup>th</sup> February 2026 ,"
           // var cheackoutdate = "13 February 2026 and check-out on 16 February 2026,"
           // var payment = "UAEpayment"
@@ -62,12 +78,12 @@ module.exports = {
           // var serves2 = "Airport Assistance (Arrival)"
           // var Hotel = "Meydan Hotel, Meydan"
           // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN UAE."
-          var CityTour = "Dubai City Tour"
+          CityTour = "Dubai City Tour"
 
 
-        } else if (destination == "Kuala Lumpur, Malaysia")  {
-          var desname = "Kuala Lumpur, Malaysia";
-          var country = "Azerbaijan";
+        } else if (destination == "Kuala Lumpur, Malaysia") {
+          desname = "Kuala Lumpur, Malaysia";
+          country = "Azerbaijan";
           // var date = "6<sup>th</sup> - 9<sup>th</sup> November 2025,"
           // var cheackoutdate = "6th November 2025 and check-out on 9th November 2025,"
           // var payment = "Azerbaijanpayment"
@@ -75,12 +91,12 @@ module.exports = {
           // var fullprice = "499"
           // var Hotel = "Hilton Baku"
           // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN Azerbaijan."
-          var CityTour = "Baku City Tour"
+          CityTour = "Baku City Tour"
 
 
         } else if (destination == "New York, USA") {
-          var desname = "New York, USA";
-          var country = "USA";
+          desname = "New York, USA";
+          country = "USA";
           // var date = "12<sup>th</sup> - 15<sup>th</sup> February 2026,"
           // var cheackoutdate = "12th February 2026 and check-out on 15th February 2026,"
           // var payment = "USApayment"
@@ -90,14 +106,14 @@ module.exports = {
           // var serves2 = "Airport Assistance (Arrival)"
           // var Hotel = "East Brunswick Hotel"
           // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN USA."
-          var CityTour = "New York City Tour"
+          CityTour = "New York City Tour"
 
 
 
 
         } else if (destination == "Riyadh, Saudi Arabia") {
-          var desname = "Riyadh, Saudi Arabia";
-          var country = "Saudi Arabia";
+          desname = "Riyadh, Saudi Arabia";
+          country = "Saudi Arabia";
           // var date = "1<sup>st</sup> - 4<sup>th</sup> october 2026,"
           // var cheackoutdate = "1st October 2026 and check-out on 4th October 2026,"
           // var payment = "Saudipayment"
@@ -105,14 +121,14 @@ module.exports = {
           // var fullprice = "799"
           // var Hotel = "Hilton Riyadh Hotel"
           // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN Saudi Arabia."
-          var CityTour = "Riyadh City Tour"
+          CityTour = "Riyadh City Tour"
 
 
 
 
         } else if (destination == "London, UK") {
-          var desname = "London, UK";
-          var country = "UK";
+          desname = "London, UK";
+          country = "UK";
           // var date = "22<sup>nd</sup> - 25<sup>th</sup> January 2026,"
           // var cheackoutdate = "22nd January 2026 and check-out on 25th January 2026,"
           // var payment = "UKpayment"
@@ -120,15 +136,15 @@ module.exports = {
           // var fullprice = "1659"
           // var Hotel = "Sunway Putra Hotel"
           // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN UK."
-          var CityTour = "London City Tour"
+          CityTour = "London City Tour"
 
 
 
 
 
         } else if (destination == "Istanbul, Turkey") {
-          var desname = "Istanbul, Turkey";
-          var country = "Turkey";
+          desname = "Istanbul, Turkey";
+          country = "Turkey";
           // var date = "11<sup>th</sup> - 14<sup>th</sup> September 2025,"
           // var cheackoutdate = "11th September 2025 and check-out on 14th September 2026,"
           // var payment = "Istanbulpayment"
@@ -136,15 +152,14 @@ module.exports = {
           // var fullprice = "639"
           // var serves1 = "Visa invitation letter"
           // var serves2 = "Airport Assistance (Arrival)"
-          // var Hotel = "G Rotana Hotel"
-          var CityTour = "Istanbul City Tour"
+          CityTour = "Istanbul City Tour"
 
 
         }
         // Add other destination-specific conditions here...
         // Build Zagatiya package HTML dynamically per destination
         var zagatiyaLines = [
-          '✓ Everything in Delegate Accommodation Experience'
+          '✓ Everything in Delegate SHEPANDUM Experience'
         ];
         if (CityTour) zagatiyaLines.push('✓ ' + CityTour);
 
@@ -161,9 +176,9 @@ module.exports = {
           _extras = [];
         }
 
-        _extras.forEach(function(x){ zagatiyaLines.push('✓ ' + x); });
+        _extras.forEach(function (x) { zagatiyaLines.push('✓ ' + x); });
         var zagatiyaHTML = zagatiyaLines.join('<br><br>');
-        
+
         // Map destination names to payment route prefixes and build plan links
         const paymentRouteMap = {
           'Dubai, UAE': 'Dubaipayment',
@@ -222,25 +237,15 @@ module.exports = {
                   <td style="padding:0 25px ; width:685px;">
 
                     <!-- LOGO -->
-                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
-                      <tr>
-                        <td align="center" style="padding:5px;">
-                          <table style="margin:0 auto;">
-                            <tr>
-                              <td style="padding-right:12px; vertical-align:middle;">
-                                <img
-                                  src="https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/Untitled_design-removebg-preview.png"
-                                  width="80" style="display:block;">
-                              </td>
-                              <td
-                                style="font-size:25px; font-weight:800; color:#0a3b6d; vertical-align:middle; text-align:left;">
-                                WORLD<br><span style="color:#9aa3ab; font-weight:700;">DIPLOMATS</span>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
+            <!-- LOGO -->
+                                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+                                            <tr>
+                                                <td align="center" style="padding:5px;">
+                                                    <img src="https://res.cloudinary.com/dhqbmpldd/image/upload/v1768562201/WORLD_DIPLOMATS_International_Model_United_Nations__1_-removebg-preview_pn1vig.png"
+                                                        width="380" style="display:block;">
+                                                </td>
+                                            </tr>
+                                        </table>
 
                     <!-- IMAGE -->
                     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
@@ -277,11 +282,11 @@ module.exports = {
                           </div>
                           <div
                             style="max-width:570px; font-size:14px; color:#0b4f88; line-height:20px; margin-bottom:25px;">
-                            Dear ${userName} your registration is now complete. You are now an official delegate
+                          Dear ${userName} your registration is now complete. You are now an official delegate
                             of WORLD DIPLOMATS. Your application has been thoroughly reviewed and we are delighted to
                             inform that you have been selected amongst a vast pool of applicants. Please find the
                             attached simplified guide to familiarize yourself with the proceedings before the conference
-                            (Pathway to the MUN) and go to your Personal Portal to book your place timely. We extend our
+                            (Pathway to the MUN) and ${isDelegation ? `<a href="${whatsappUrl}" style="color:#0b4f88; font-weight:bold; text-decoration:underline;">Chat with us</a>` : "go to your Personal Portal"} to book your place timely. We extend our
                             heartiest welcome to you and await to see you at Istanbul International MUN.
                           </div>
 
@@ -370,8 +375,8 @@ module.exports = {
               <!-- BUTTON -->
                   <tr>
                 <td align="center" valign="bottom">
-                  <a href="${basicUrl}" style="background:linear-gradient(90deg,#8c1537,#0b67c2); color:#fff; padding:12px 24px; border-radius:14px; font-weight:600; text-decoration:none; display:inline-block;">
-                    CHOOSE PLAN
+                  <a href="${isDelegation ? whatsappUrl : basicUrl}" style="background:linear-gradient(90deg,#8c1537,#0b67c2); color:#fff; padding:12px 24px; border-radius:14px; font-weight:600; text-decoration:none; display:inline-block;">
+                    ${isDelegation ? 'CHAT WITH US' : 'CHOOSE PLAN'}
                   </a>
                 </td>
               </tr>
@@ -396,8 +401,8 @@ module.exports = {
               <!-- BUTTON -->
               <tr>
                 <td align="center" valign="bottom">
-                  <a href="${shepandumUrl}" style="background:linear-gradient(90deg,#8c1537,#0b67c2); color:#fff; padding:12px 24px; border-radius:14px; font-weight:600; text-decoration:none; display:inline-block;">
-                    CHOOSE PLAN
+                  <a href="${isDelegation ? whatsappUrl : shepandumUrl}" style="background:linear-gradient(90deg,#8c1537,#0b67c2); color:#fff; padding:12px 24px; border-radius:14px; font-weight:600; text-decoration:none; display:inline-block;">
+                    ${isDelegation ? 'CHAT WITH US' : 'CHOOSE PLAN'}
                   </a>
                 </td>
               </tr>
@@ -420,8 +425,8 @@ module.exports = {
               <!-- BUTTON -->
               <tr>
                 <td align="center" valign="bottom">
-                  <a href="${zagatiyaUrl}" style="background:linear-gradient(90deg,#8c1537,#0b67c2); color:#fff; padding:12px 24px; border-radius:14px; font-weight:600; text-decoration:none; display:inline-block;">
-                    CHOOSE PLAN
+                  <a href="${isDelegation ? whatsappUrl : zagatiyaUrl}" style="background:linear-gradient(90deg,#8c1537,#0b67c2); color:#fff; padding:12px 24px; border-radius:14px; font-weight:600; text-decoration:none; display:inline-block;">
+                    ${isDelegation ? 'CHAT WITH US' : 'CHOOSE PLAN'}
                   </a>
                 </td>
               </tr>
@@ -473,9 +478,9 @@ module.exports = {
                       style="max-width:350px; margin-bottom:10px;">
                       <tr>
                        <td align="center" style="background:linear-gradient(90deg,#8c1537,#0b67c2); padding:19px; border-radius:10px;">
-  <a href="https://www.worlddiplomats.org/Terms&Conditions" target="_blank" style="text-decoration:none; display:block;">
+  <a href="${isDelegation ? whatsappUrl : 'https://www.worlddiplomats.org/Terms&Conditions'}" target="_blank" style="text-decoration:none; display:block;">
     <div style="font-size:20px; font-weight:bold; color:#fff; letter-spacing:1px;">
-      CLICK HERE FOR THE T&C
+      ${isDelegation ? 'CHAT WITH US' : 'CLICK HERE FOR THE T&C'}
     </div>
   </a>
 </td>
@@ -512,9 +517,19 @@ module.exports = {
 
                                     <!-- INSTAGRAM -->
                                     <td align="center" style="font-size:10px;">
-                                        <a href="https://www.instagram.com/worlddiplomatsmun/" target="_blank"
+                                        <a href="https://www.instagram.com/worlddiplomats_?igsh=M3ppbG5hcmp5bnJr" target="_blank"
                                             style="color:#0a3b6d;text-decoration:none;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+                                                width="12" style="vertical-align:middle;">
+                                            &nbsp;<span style="text-decoration:underline;">@worlddiplomats_</span>
+                                        </a>
+                                    </td>
+
+                                    <!-- TIKTOK -->
+                                    <td align="center" style="font-size:10px;">
+                                        <a href="https://www.tiktok.com/@worlddiplomatsmun" target="_blank"
+                                            style="color:#0a3b6d;text-decoration:none;">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"
                                                 width="12" style="vertical-align:middle;">
                                             &nbsp;<span style="text-decoration:underline;">@worlddiplomatsmun</span>
                                         </a>
@@ -522,7 +537,7 @@ module.exports = {
 
                                     <!-- FACEBOOK -->
                                     <td align="center" style="font-size:10px;">
-                                        <a href="https://www.facebook.com/worlddiplomats" target="_blank"
+                                        <a href="https://www.facebook.com/profile.php?id=61585300508391" target="_blank"
                                             style="color:#0a3b6d;text-decoration:none;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/2111/2111392.png"
                                                 width="12" style="vertical-align:middle;">
@@ -632,20 +647,20 @@ module.exports = {
 </body>
 
 </html>`,
-            }, async (err, info) => {
-              if (err) {
-                console.error(`❌ Failed to send email for ${email}:`, err.message);
-              } else {
-                console.log(`✅ Email sent to ${email}`);
+          }, async (err, info) => {
+            if (err) {
+              console.error(`❌ Failed to send email for ${email}:`, err.message);
+            } else {
+              console.log(`✅ Email sent to ${email}`);
 
-                // 🔄 Update all sent notifications
-                const ids = notifs.map(n => n.id);
-                await strapi.db.query('api::notification.notification').updateMany({
-                  where: { id: { $in: ids } },
-                  data: { emailSent: true },
-                });
-              }
-            });
+              // 🔄 Update all sent notifications
+              const ids = notifs.map(n => n.id);
+              await strapi.db.query('api::notification.notification').updateMany({
+                where: { id: { $in: ids } },
+                data: { emailSent: true },
+              });
+            }
+          });
         } catch (err) {
           console.error(`❌ Failed to process email for ${email}:`, err.message);
         }

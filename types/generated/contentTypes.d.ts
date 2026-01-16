@@ -569,6 +569,7 @@ export interface ApiFirstnameFirstname extends Struct.CollectionTypeSchema {
     Name: Schema.Attribute.Text;
     Nationality: Schema.Attribute.String;
     PhoneNumber: Schema.Attribute.BigInteger;
+    PriorConferenceExperience: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registrationType: Schema.Attribute.Enumeration<['single', 'group']>;
     updatedAt: Schema.Attribute.DateTime;
@@ -619,6 +620,7 @@ export interface ApiFivenameFivename extends Struct.CollectionTypeSchema {
     Name: Schema.Attribute.Text;
     Nationality: Schema.Attribute.String;
     PhoneNumber: Schema.Attribute.BigInteger;
+    PriorConferenceExperience: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registrationType: Schema.Attribute.Enumeration<['single', 'group']>;
     updatedAt: Schema.Attribute.DateTime;
@@ -669,6 +671,7 @@ export interface ApiFivthnameFivthname extends Struct.CollectionTypeSchema {
     Name: Schema.Attribute.Text;
     Nationality: Schema.Attribute.String;
     PhoneNumber: Schema.Attribute.BigInteger;
+    PriorConferenceExperience: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registrationType: Schema.Attribute.Enumeration<['single', 'group']>;
     updatedAt: Schema.Attribute.DateTime;
@@ -719,6 +722,7 @@ export interface ApiFournameFourname extends Struct.CollectionTypeSchema {
     Name: Schema.Attribute.Text;
     Nationality: Schema.Attribute.String;
     PhoneNumber: Schema.Attribute.BigInteger;
+    PriorConferenceExperience: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registrationType: Schema.Attribute.Enumeration<['single', 'group']>;
     updatedAt: Schema.Attribute.DateTime;
@@ -751,6 +755,7 @@ export interface ApiNotificationNotification
     enddate: Schema.Attribute.String;
     FirstName: Schema.Attribute.String;
     Idname: Schema.Attribute.BigInteger;
+    isDelegation: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -763,6 +768,7 @@ export interface ApiNotificationNotification
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Username: Schema.Attribute.String;
     year: Schema.Attribute.String;
   };
 }
@@ -807,6 +813,7 @@ export interface ApiSecondenameSecondename extends Struct.CollectionTypeSchema {
     Name: Schema.Attribute.Text;
     Nationality: Schema.Attribute.String;
     PhoneNumber: Schema.Attribute.BigInteger;
+    PriorConferenceExperience: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registrationType: Schema.Attribute.Enumeration<['single', 'group']>;
     updatedAt: Schema.Attribute.DateTime;

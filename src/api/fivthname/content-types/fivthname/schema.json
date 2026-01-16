@@ -77,6 +77,9 @@
     },
     "groupEmail": {
       "type": "email"
+    },
+    "PriorConferenceExperience": {
+      "type": "string"
     }
   }
 }

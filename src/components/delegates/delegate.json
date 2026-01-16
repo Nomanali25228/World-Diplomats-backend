@@ -9,10 +9,13 @@
     "name": {
       "type": "string"
     },
-    "whatIsYourShirtSize": {
+    "WhatIsYourShirtSize": {
       "type": "string"
     },
-    "doYouHaveAFoodpreference": {
+    "DoYouHaveAFoodpreference": {
+      "type": "string"
+    },
+    "pricepackage": {
       "type": "string"
     }
   }

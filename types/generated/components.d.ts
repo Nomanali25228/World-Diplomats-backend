@@ -7,9 +7,10 @@ export interface DelegatesDelegate extends Struct.ComponentSchema {
     displayName: 'delegate';
   };
   attributes: {
-    doYouHaveAFoodpreference: Schema.Attribute.String;
+    DoYouHaveAFoodpreference: Schema.Attribute.String;
     name: Schema.Attribute.String;
-    whatIsYourShirtSize: Schema.Attribute.String;
+    pricepackage: Schema.Attribute.String;
+    WhatIsYourShirtSize: Schema.Attribute.String;
   };
 }
 

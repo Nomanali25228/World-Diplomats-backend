@@ -22,6 +22,9 @@
     "FirstName": {
       "type": "string"
     },
+    "Username": {
+      "type": "string"
+    },
     "Idname": {
       "type": "biginteger"
     },
@@ -39,6 +42,10 @@
     },
     "year": {
       "type": "string"
+    },
+    "isDelegation": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
