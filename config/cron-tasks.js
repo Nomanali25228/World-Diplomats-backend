@@ -5,7 +5,7 @@ module.exports = {
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const oneHourAgo = new Date(Date.now() + 8 * 60 * 60 * 1000)
+      const oneHourAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
 
 
 
