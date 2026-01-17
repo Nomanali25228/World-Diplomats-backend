@@ -1,11 +1,13 @@
 const nodemailer = require('nodemailer');
+const puppeteer = require('puppeteer');
 
 module.exports = {
   // CRON: Runs every minute
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const oneHourAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+      const oneHourAgo = new Date(Date.now() - 1 * 60 * 1000)
+      // const oneHourAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
 
 
 
@@ -37,6 +39,8 @@ module.exports = {
         },
       });
 
+      const pdfBuffers = {};
+
       for (const [email, notifs] of Object.entries(emailGroups)) {
         const {
           FirstName: firstName,
@@ -67,96 +71,42 @@ module.exports = {
         var country = destination.includes(',') ? destination.split(',')[1].trim() : destination;
         var CityTour = '';
 
+        var venue = "TBA";
         if (destination == "Dubai, UAE") {
           desname = "Dubai, UAE";
           country = "UAE";
-          // var date = "13<sup>th</sup> - 16<sup>th</sup> February 2026 ,"
-          // var cheackoutdate = "13 February 2026 and check-out on 16 February 2026,"
-          // var payment = "UAEpayment"
-          // var basicprice = "459"
-          // var fullprice = "679"
-          // var serves1 = "Visa invitation letter"
-          // var serves2 = "Airport Assistance (Arrival)"
-          // var Hotel = "Meydan Hotel, Meydan"
-          // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN UAE."
-          CityTour = "Dubai City Tour"
-
-
+          CityTour = "Dubai City Tour";
+          venue = "Meydan Hotel, Dubai";
         } else if (destination == "Kuala Lumpur, Malaysia") {
           desname = "Kuala Lumpur, Malaysia";
-          country = "Azerbaijan";
-          // var date = "6<sup>th</sup> - 9<sup>th</sup> November 2025,"
-          // var cheackoutdate = "6th November 2025 and check-out on 9th November 2025,"
-          // var payment = "Azerbaijanpayment"
-          // var basicprice = "349"
-          // var fullprice = "499"
-          // var Hotel = "Hilton Baku"
-          // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN Azerbaijan."
-          CityTour = "Baku City Tour"
-
-
+          country = "Malaysia";
+          CityTour = "Baku City Tour";
+          venue = "Sunway Putra Hotel, Kuala Lumpur";
         } else if (destination == "New York, USA") {
           desname = "New York, USA";
           country = "USA";
-          // var date = "12<sup>th</sup> - 15<sup>th</sup> February 2026,"
-          // var cheackoutdate = "12th February 2026 and check-out on 15th February 2026,"
-          // var payment = "USApayment"
-          // var basicprice = "979"
-          // var fullprice = "1599"
-          // var serves1 = "Visa invitation letter"
-          // var serves2 = "Airport Assistance (Arrival)"
-          // var Hotel = "East Brunswick Hotel"
-          // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN USA."
-          CityTour = "New York City Tour"
-
-
-
-
+          CityTour = "New York City Tour";
+          venue = "East Brunswick Hotel, New York";
         } else if (destination == "Riyadh, Saudi Arabia") {
           desname = "Riyadh, Saudi Arabia";
           country = "Saudi Arabia";
-          // var date = "1<sup>st</sup> - 4<sup>th</sup> october 2026,"
-          // var cheackoutdate = "1st October 2026 and check-out on 4th October 2026,"
-          // var payment = "Saudipayment"
-          // var basicprice = "649"
-          // var fullprice = "799"
-          // var Hotel = "Hilton Riyadh Hotel"
-          // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN Saudi Arabia."
-          CityTour = "Riyadh City Tour"
-
-
-
-
+          CityTour = "Riyadh City Tour";
+          venue = "Hilton Riyadh Hotel, Riyadh";
         } else if (destination == "London, UK") {
           desname = "London, UK";
           country = "UK";
-          // var date = "22<sup>nd</sup> - 25<sup>th</sup> January 2026,"
-          // var cheackoutdate = "22nd January 2026 and check-out on 25th January 2026,"
-          // var payment = "UKpayment"
-          // var basicprice = "959"
-          // var fullprice = "1659"
-          // var Hotel = "Sunway Putra Hotel"
-          // var para = "  You have been recognized as an Early Bird Applicant and are eligible for free airport Assistance in the host country on your arrival for AtsasMUN UK."
-          CityTour = "London City Tour"
-
-
-
-
-
+          CityTour = "London City Tour";
+          venue = "140 Bath Rd, Heathrow, London";
         } else if (destination == "Istanbul, Turkey") {
           desname = "Istanbul, Turkey";
           country = "Turkey";
-          // var date = "11<sup>th</sup> - 14<sup>th</sup> September 2025,"
-          // var cheackoutdate = "11th September 2025 and check-out on 14th September 2026,"
-          // var payment = "Istanbulpayment"
-          // var basicprice = "389"
-          // var fullprice = "639"
-          // var serves1 = "Visa invitation letter"
-          // var serves2 = "Airport Assistance (Arrival)"
-          CityTour = "Istanbul City Tour"
-
-
+          CityTour = "Istanbul City Tour";
+          venue = "G Rotana Hotel, Istanbul";
         }
+
+        const conferenceDates = `${startdate} to ${enddate} ${month} ${year}`;
+        const checkInDate = `${startdate} ${month} ${year}`;
+        const checkOutDate = `${enddate} ${month} ${year}`;
         // Add other destination-specific conditions here...
         // Build Zagatiya package HTML dynamically per destination
         var zagatiyaLines = [
@@ -206,11 +156,239 @@ module.exports = {
         `;
 
         try {
+          // Create a unique key for the PDF cache to handle potential date variations per destination
+          const pdfKey = `${destination}_${startdate}_${enddate}_${month}_${year}`;
+
+          if (destination && !pdfBuffers[pdfKey]) {
+            console.log(`Generating PDF for destination: ${destination}, Key: ${pdfKey}`);
+            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+            const page = await browser.newPage();
+            const pdfTemplate = `<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Letter of Affirmation</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#eaeaea;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#eaeaea">
+    <tr>
+      <td align="center">
+
+        <!-- MAIN EMAIL CONTAINER -->
+        <table width="850" cellpadding="0" cellspacing="0"
+          background="https://6e77be9065.imgdist.com/pub/bfra/izj5d9lu/9f3/ib8/46d/logo%20wd.pdf%20%282%29.png" style="
+          background-image:url('https://6e77be9065.imgdist.com/pub/bfra/izj5d9lu/9f3/ib8/46d/logo%20wd.pdf%20%282%29.png');
+          background-repeat:no-repeat;
+          background-position:center top;
+          background-size:cover;
+          height: 1200px;
+          font-family:Arial, Helvetica, sans-serif;
+        ">
+          <tr>
+            <td style="padding:180px 60px 60px 60px;">
+
+              <!-- TITLE -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center">
+                    <h2 style="margin:10px 0 20px 0; color:#0b3c6d; font-size:22px;">
+                      Letter of Affirmation
+                    </h2>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- BODY TEXT -->
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                Dear Applicant,
+              </p>
+
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                <strong>Congratulations!</strong><br />
+                We are pleased to formally confirm your acceptance to participate in the
+                <strong>World Diplomats International Conference ${year}</strong>, organized by
+                <strong>Globenix Youth Forum</strong>, scheduled to be held from
+                <strong>${conferenceDates}</strong> in
+                <strong>${destination}</strong>.
+              </p>
+
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                World Diplomats is an international diplomatic and leadership platform dedicated
+                to empowering emerging leaders, policymakers, and change makers by fostering dialogue,
+                collaboration, and innovative solutions to global challenges.
+              </p>
+
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                We are honored to extend this letter as an official
+                <strong>Letter of Affirmation</strong> confirming your participation
+                in the above-mentioned conference.
+              </p>
+
+              <!-- EVENT DETAILS -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;">
+                <tr>
+                  <td style="font-size:15px; color:#333333; line-height:24px;">
+                    <strong>Conference Venue:</strong> ${venue}<br />
+                    <strong>Destination:</strong> ${destination}<br />
+                    <strong>Conference Dates:</strong> ${conferenceDates}
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                You are requested to pay your delegate fee in order to become a confirmed delegate
+                of World Diplomats ${destination} via the following link:
+              </p>
+
+              <p style="margin:0 0 15px 0;">
+                <a href="#" style="color:#0b3c6d; font-weight:bold; text-decoration:underline;">
+                  Conference Fee Link
+                </a>
+              </p>
+
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                Each participant will be responsible for his/her visa fee and flight tickets.
+                Hotel check-in will be on <strong>${checkInDate}</strong> and check-out on
+                <strong>${checkOutDate}</strong>.
+              </p>
+
+              <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
+                The committee will provide accommodation, meals, local transportation,
+                and merch kits to participants with Accommodation and Full Experience packages.
+              </p>
+
+              <p style="margin:0 0 30px 0; font-size:15px; color:#333333; line-height:24px;">
+                Further logistical and participation-related details will be communicated
+                to confirmed paid delegates closer to the event date.
+              </p>
+
+              <!-- SIGN OFF -->
+              <p style="margin:0 0 30px 0; font-size:15px; color:#333333; line-height:24px;">
+                Warm regards,<br />
+                <strong>Secretariat</strong><br />
+                World Diplomats International MUN ${year}<br />
+                ${destination}
+              </p>
+
+              <!-- FOOTER SOCIAL LINKS (CENTERED) -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:30px; border-top:1px solid #ddd;">
+                <tr>
+                  <td align="center" style="padding-top:15px;">
+
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+
+                        <!-- Instagram -->
+                        <td style="padding:0 7px; font-size:13px;">
+                          <a href="https://instagram.com/worlddiplomats_" target="_blank"
+                            style="color:#0b3c6d; text-decoration:none;"
+                            onmouseover="this.style.textDecoration='underline';"
+                            onmouseout="this.style.textDecoration='none';">
+                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/instagram-new.png"
+                              style="vertical-align:middle; border:0;">
+                            worlddiplomats_
+                          </a>
+                        </td>
+
+                        <!-- Facebook -->
+                        <td style="padding:0 7px; font-size:13px;">
+                          <a href="https://facebook.com/worlddiplomats" target="_blank"
+                            style="color:#0b3c6d; text-decoration:none;"
+                            onmouseover="this.style.textDecoration='underline';"
+                            onmouseout="this.style.textDecoration='none';">
+                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/facebook-new.png"
+                              style="vertical-align:middle; border:0;">
+                            worlddiplomats
+                          </a>
+                        </td>
+
+                        <!-- Phone -->
+                        <td style="padding:0 7px; font-size:13px;">
+                          <a href="tel:+447490344639" style="color:#0b3c6d; text-decoration:none;"
+                            onmouseover="this.style.textDecoration='underline';"
+                            onmouseout="this.style.textDecoration='none';">
+                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/phone.png"
+                              style="vertical-align:middle; border:0;">
+                            +44 7490344639
+                          </a>
+                        </td>
+
+                        <!-- Email -->
+                        <td style="padding:0 7px; font-size:13px;">
+                          <a href="mailto:info@worlddiplomats.org" style="color:#0b3c6d; text-decoration:none;"
+                            onmouseover="this.style.textDecoration='underline';"
+                            onmouseout="this.style.textDecoration='none';">
+                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/new-post.png"
+                              style="vertical-align:middle; border:0;">
+                            info@worlddiplomats.org
+                          </a>
+                        </td>
+
+                        <!-- Website -->
+                        <td style="padding:0 7px; font-size:13px;">
+                          <a href="https://worlddiplomats.org" target="_blank"
+                            style="color:#0b3c6d; text-decoration:none;"
+                            onmouseover="this.style.textDecoration='underline';"
+                            onmouseout="this.style.textDecoration='none';">
+                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/globe.png"
+                              style="vertical-align:middle; border:0;">
+                            worlddiplomats.org
+                          </a>
+                        </td>
+
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <!-- END EMAIL -->
+
+  </td>
+  </tr>
+  </table>
+
+</body>
+
+</html>`;
+            await page.setContent(pdfTemplate, { waitUntil: 'networkidle0' });
+            pdfBuffers[pdfKey] = await page.pdf({
+              format: 'A4',
+              printBackground: true,
+              margin: { top: '0px', right: '0px', bottom: '0px', left: '0px' }
+            });
+            await browser.close();
+          }
+
           // 📧 Send email directly
-          transporter.sendMail({
+          const emailAttachments = [];
+          if (destination && pdfBuffers[pdfKey]) {
+            console.log(`Attaching PDF for ${email} (${destination}) using key ${pdfKey}`);
+            emailAttachments.push({
+              filename: 'Letter of Affirmation.pdf',
+              content: pdfBuffers[pdfKey],
+              contentType: 'application/pdf'
+            });
+          } else {
+            console.warn(`⚠️ No PDF buffer found for ${email} (${destination})`);
+          }
+
+          await transporter.sendMail({
             from: 'World Diplomats <info@worlddiplomats.org>',
             to: email,
             subject: 'YOUR LETTER OF ACCEPTANCE',
+            attachments: emailAttachments,
             html: `<!DOCTYPE html>
 <html>
 
@@ -288,7 +466,7 @@ module.exports = {
                             inform that you have been selected amongst a vast pool of applicants. Please find the
                             attached simplified guide to familiarize yourself with the proceedings before the conference
                             (Pathway to the MUN) and ${isDelegation ? `<a href="${whatsappUrl}" style="color:#0b4f88; font-weight:bold; text-decoration:underline;">Chat with us</a>` : "go to your Personal Portal"} to book your place timely. We extend our
-                            heartiest welcome to you and await to see you at Istanbul International MUN.
+                            heartiest welcome to you and await to see you at ${desname} International MUN.
                           </div>
 
                           <!-- EARLY BIRD BOX -->
@@ -648,19 +826,15 @@ module.exports = {
 </body>
 
 </html>`,
-          }, async (err, info) => {
-            if (err) {
-              console.error(`❌ Failed to send email for ${email}:`, err.message);
-            } else {
-              console.log(`✅ Email sent to ${email}`);
+          });
 
-              // 🔄 Update all sent notifications
-              const ids = notifs.map(n => n.id);
-              await strapi.db.query('api::notification.notification').updateMany({
-                where: { id: { $in: ids } },
-                data: { emailSent: true },
-              });
-            }
+          console.log(`✅ Email sent to ${email}`);
+
+          // 🔄 Update all sent notifications
+          const ids = notifs.map(n => n.id);
+          await strapi.db.query('api::notification.notification').updateMany({
+            where: { id: { $in: ids } },
+            data: { emailSent: true },
           });
         } catch (err) {
           console.error(`❌ Failed to process email for ${email}:`, err.message);
