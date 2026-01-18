@@ -97,14 +97,25 @@ module.exports = {
           country = "UK";
           CityTour = "London City Tour";
           venue = "140 Bath Rd, Heathrow, London";
-        } else if (destination == "Istanbul, Turkey") {
-          desname = "Istanbul, Turkey";
-          country = "Turkey";
+        } else if (destination == "Istanbul, Türkiye") {
+          desname = "Istanbul, Türkiye";
+          country = "Türkiye";
           CityTour = "Istanbul City Tour";
           venue = "G Rotana Hotel, Istanbul";
         }
 
-        const conferenceDates = `${startdate} to ${enddate} ${month} ${year}`;
+        const isLikelyRangeOrOrdinal = (val) => val && /^\d+([a-z]{2})?((\s*-\s*)\d+([a-z]{2})?)?$/i.test(val.toString().trim());
+        const isNumeric = (val) => val && /^\d+$/.test(val.toString().trim());
+
+        const isDateText = (startdate && !isLikelyRangeOrOrdinal(startdate)) || (enddate && !isLikelyRangeOrOrdinal(enddate));
+        const dateTextValue = isDateText ? (startdate && !isNumeric(startdate) ? startdate : enddate) : null;
+
+        const conferenceDates = dateTextValue
+          ? `${dateTextValue} ${month} ${year}`.trim()
+          : (startdate.includes('-') || startdate.toLowerCase().includes('to'))
+            ? `${startdate} ${month} ${year}`
+            : `${startdate} to ${enddate} ${month} ${year}`;
+
         const checkInDate = `${startdate} ${month} ${year}`;
         const checkOutDate = `${enddate} ${month} ${year}`;
         // Add other destination-specific conditions here...
@@ -115,7 +126,7 @@ module.exports = {
         if (CityTour) zagatiyaLines.push('✓ ' + CityTour);
 
         var _extras = [];
-        if (destination == "Istanbul, Turkey") {
+        if (destination == "Istanbul, Türkiye") {
           _extras = ['Bosphorus Rooftop Lunch Tour', 'Cruise Trip & Dinner at Bosphorus'];
         } else if (destination == "Dubai, UAE") {
           _extras = ['Desert Safari'];
@@ -131,13 +142,14 @@ module.exports = {
         var zagatiyaHTML = zagatiyaLines.join('<br><br>');
 
         // Map destination names to payment route prefixes and build plan links
+
         const paymentRouteMap = {
           'Dubai, UAE': 'Dubaipayment',
           'Kuala Lumpur, Malaysia': 'Malaysiapayment',
           'New York, USA': 'USApayment',
           'Riyadh, Saudi Arabia': 'Saudipayment',
           'London, UK': 'Londonpayment',
-          'Istanbul, Turkey': 'Istanbulpayment',
+          'Istanbul, Türkiye': 'Istanbulpayment',
         };
 
         const routePrefix = paymentRouteMap[destination] || 'Payment';
@@ -203,14 +215,14 @@ module.exports = {
 
               <!-- BODY TEXT -->
               <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
-                Dear Applicant,
+                Dear ${userName},
               </p>
 
               <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
                 <strong>Congratulations!</strong><br />
                 We are pleased to formally confirm your acceptance to participate in the
                 <strong>World Diplomats International Conference ${year}</strong>, organized by
-                <strong>Globenix Youth Forum</strong>, scheduled to be held from
+                <strong>Globenix Youth Forum</strong>, ${dateTextValue ? 'which is' : 'scheduled to be held from'}
                 <strong>${conferenceDates}</strong> in
                 <strong>${destination}</strong>.
               </p>
@@ -239,20 +251,24 @@ module.exports = {
               </table>
 
               <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
-                You are requested to pay your delegate fee in order to become a confirmed delegate
-                of World Diplomats ${destination} via the following link:
+                ${isDelegation
+                ? "You are requested to contact us via WhatsApp to finalize your delegation's registration and payment:"
+                : `You are requested to pay your delegate fee in order to become a confirmed delegate of World Diplomats ${destination} via the following link:`
+              }
               </p>
 
               <p style="margin:0 0 15px 0;">
-                <a href="#" style="color:#0b3c6d; font-weight:bold; text-decoration:underline;">
-                  Conference Fee Link
+                <a href="${isDelegation ? whatsappUrl : (basicUrl || '#')}" style="color:#0b3c6d; font-weight:bold; text-decoration:underline;">
+                  ${isDelegation ? 'Chat with us' : 'Conference Fee Link'}
                 </a>
               </p>
 
               <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
                 Each participant will be responsible for his/her visa fee and flight tickets.
-                Hotel check-in will be on <strong>${checkInDate}</strong> and check-out on
-                <strong>${checkOutDate}</strong>.
+                ${dateTextValue
+                ? `Hotel check-in and check-out dates are <strong>${dateTextValue} ${month} ${year}</strong>.`
+                : `Hotel check-in will be on <strong>${checkInDate}</strong> and check-out on <strong>${checkOutDate}</strong>.`
+              }
               </p>
 
               <p style="margin:0 0 15px 0; font-size:15px; color:#333333; line-height:24px;">
