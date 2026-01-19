@@ -321,6 +321,18 @@ module.exports = {
                           </a>
                         </td>
 
+                        <!-- TikTok -->
+                        <td style="padding:0 7px; font-size:13px;">
+                          <a href="https://www.tiktok.com/@worlddiplomats" target="_blank"
+                            style="color:#0b3c6d; text-decoration:none;"
+                            onmouseover="this.style.textDecoration='underline';"
+                            onmouseout="this.style.textDecoration='none';">
+                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/tiktok.png"
+                              style="vertical-align:middle; border:0;">
+                            worlddiplomats
+                          </a>
+                        </td>
+
                         <!-- Phone -->
                         <td style="padding:0 7px; font-size:13px;">
                           <a href="tel:+447490344639" style="color:#0b3c6d; text-decoration:none;"
@@ -722,11 +734,11 @@ module.exports = {
 
                                     <!-- TIKTOK -->
                                     <td align="center" style="font-size:10px;">
-                                        <a href="https://www.tiktok.com/@worlddiplomatsmun" target="_blank"
+                                        <a href="https://www.tiktok.com/@worlddiplomats" target="_blank"
                                             style="color:#0a3b6d;text-decoration:none;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"
                                                 width="12" style="vertical-align:middle;">
-                                            &nbsp;<span style="text-decoration:underline;">@worlddiplomatsmun</span>
+                                            &nbsp;<span style="text-decoration:underline;">@worlddiplomats</span>
                                         </a>
                                     </td>
 
