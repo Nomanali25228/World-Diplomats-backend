@@ -6,8 +6,8 @@ module.exports = {
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const oneHourAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
-      // const oneHourAgo = new Date(Date.now() - 1 * 60 * 1000)
+      const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+      // const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
 
 
 
@@ -15,7 +15,7 @@ module.exports = {
       const notifications = await strapi.db.query('api::notification.notification').findMany({
         where: {
           emailSent: false,
-          createdAt: { $lt: oneHourAgo }
+          createdAt: { $lt: eightHoursAgo }
         },
       });
 
