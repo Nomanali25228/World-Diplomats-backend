@@ -6,11 +6,9 @@ module.exports = {
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
-      // const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+      const eightHoursAgo = new Date(Date.now() - 1 * 60 * 1000);
 
-
-
+      console.log(`[Cron] Checking for notifications older than: ${eightHoursAgo.toISOString()}`);
 
       const notifications = await strapi.db.query('api::notification.notification').findMany({
         where: {
@@ -18,6 +16,13 @@ module.exports = {
           createdAt: { $lt: eightHoursAgo }
         },
       });
+
+      if (!notifications || notifications.length === 0) {
+        console.log(`[Cron] No pending notifications found older than 8 hours.`);
+        return;
+      }
+
+      console.log(`[Cron] Found ${notifications.length} notifications. Emails: ${notifications.map(n => n.Email).join(', ')}`);
 
       const emailGroups = notifications.reduce((acc, notification) => {
         const email = notification.Email;
