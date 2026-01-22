@@ -79,32 +79,32 @@ module.exports = {
         var venue = "TBA";
         if (destination == "Dubai, UAE") {
           desname = "Dubai, UAE";
-          country = "UAE";
+          country = "Dubai, UAE";
           CityTour = "Dubai City Tour";
           venue = "Meydan Hotel, Dubai";
         } else if (destination == "Kuala Lumpur, Malaysia") {
           desname = "Kuala Lumpur, Malaysia";
-          country = "Malaysia";
+          country = "Kuala Lumpur, Malaysia";
           CityTour = "Baku City Tour";
           venue = "Sunway Putra Hotel, Kuala Lumpur";
         } else if (destination == "New York, USA") {
           desname = "New York, USA";
-          country = "USA";
+          country = "New York, USA";
           CityTour = "New York City Tour";
           venue = "East Brunswick Hotel, New York";
         } else if (destination == "Riyadh, Saudi Arabia") {
           desname = "Riyadh, Saudi Arabia";
-          country = "Saudi Arabia";
+          country = "Riyadh, Saudi Arabia";
           CityTour = "Riyadh City Tour";
           venue = "Hilton Riyadh Hotel, Riyadh";
         } else if (destination == "London, UK") {
           desname = "London, UK";
-          country = "UK";
+          country = "London, UK";
           CityTour = "London City Tour";
           venue = "140 Bath Rd, Heathrow, London";
         } else if (destination == "Istanbul, Türkiye") {
           desname = "Istanbul, Türkiye";
-          country = "Türkiye";
+          country = "Istanbul, Türkiye";
           CityTour = "Istanbul City Tour";
           venue = "G Rotana Hotel, Istanbul";
         }
