@@ -6,7 +6,7 @@ module.exports = {
   // ok
   '*/1 * * * *': async ({ strapi }) => {
     try {
-      const eightHoursAgo = new Date(Date.now() - 1 * 60 * 1000);
+      const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000);
 
       console.log(`[Cron] Checking for notifications older than: ${eightHoursAgo.toISOString()}`);
 
