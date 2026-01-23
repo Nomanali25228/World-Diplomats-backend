@@ -4,7 +4,8 @@
   "info": {
     "singularName": "delegation-application",
     "pluralName": "delegation-applications",
-    "displayName": "delegation-applications"
+    "displayName": "delegation-applications",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -40,6 +41,9 @@
     },
     "accommodation": {
       "type": "boolean"
+    },
+    "Destinations": {
+      "type": "string"
     }
   }
 }

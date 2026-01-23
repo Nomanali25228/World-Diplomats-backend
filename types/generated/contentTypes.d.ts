@@ -495,6 +495,7 @@ export interface ApiDelegationApplicationDelegationApplication
   extends Struct.CollectionTypeSchema {
   collectionName: 'delegation_applications';
   info: {
+    description: '';
     displayName: 'delegation-applications';
     pluralName: 'delegation-applications';
     singularName: 'delegation-application';
@@ -512,6 +513,7 @@ export interface ApiDelegationApplicationDelegationApplication
       Schema.Attribute.Private;
     delegates: Schema.Attribute.JSON;
     delegationName: Schema.Attribute.String;
+    Destinations: Schema.Attribute.String;
     email: Schema.Attribute.Email;
     headChaperone: Schema.Attribute.String;
     institution: Schema.Attribute.String;
