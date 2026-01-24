@@ -47,20 +47,16 @@ module.exports = {
       const pdfBuffers = {};
 
       for (const [email, notifs] of Object.entries(emailGroups)) {
-        const {
-          FirstName: firstName,
-          Username: username,
-          isDelegation: delegationFlag,
-          Idname: userId = '',
-          Destinations: rawDestination = '',
-          startdate: startdate = '',
-          enddate: enddate = '',
-          month: month = '',
-          year: year = '',
-
-
-
-        } = notifs[0] || {};
+        const notif = notifs[0] || {};
+        const firstName = notif.FirstName || '';
+        const username = notif.Username || '';
+        const delegationFlag = notif.isDelegation || false;
+        const userId = notif.Idname || '';
+        const rawDestination = notif.Destinations || '';
+        const startdate = notif.startdate || '';
+        const enddate = notif.enddate || '';
+        const month = notif.month || '';
+        const year = notif.year || '';
 
         const isDelegation = delegationFlag || false;
         const userName = firstName || username || "Delegation";
@@ -102,9 +98,9 @@ module.exports = {
           country = "London, UK";
           CityTour = "London City Tour";
           venue = "140 Bath Rd, Heathrow, London";
-        } else if (destination == "Istanbul, Türkiye") {
-          desname = "Istanbul, Türkiye";
-          country = "Istanbul, Türkiye";
+        } else if (destination == "Istanbul, Türkiye" || destination == "Istanbul, Turkey") {
+          desname = destination;
+          country = destination;
           CityTour = "Istanbul City Tour";
           venue = "G Rotana Hotel, Istanbul";
         }
