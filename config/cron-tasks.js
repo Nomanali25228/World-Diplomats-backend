@@ -191,7 +191,7 @@ module.exports = {
       <td align="center">
 
         <!-- MAIN EMAIL CONTAINER -->
-        <table width="850" cellpadding="0" cellspacing="0"
+        <table width="910" cellpadding="0" cellspacing="0"
           background="https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/laterhead%20bg%20image.jpeg" style="
           background-image:url('https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/laterhead%20bg%20image.jpeg');
           background-repeat:no-repeat;
@@ -322,39 +322,25 @@ module.exports = {
                           </a>
                         </td>
 
-                        <!-- TikTok -->
-                        <td style="padding:0 7px; font-size:13px;">
-                          <a href="https://www.tiktok.com/@worlddiplomats" target="_blank"
-                            style="color:#0b3c6d; text-decoration:none;"
-                            onmouseover="this.style.textDecoration='underline';"
-                            onmouseout="this.style.textDecoration='none';">
-                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/tiktok.png"
-                              style="vertical-align:middle; border:0;">
-                            worlddiplomats
-                          </a>
-                        </td>
+                       
 
-                        <!-- Phone -->
+                        <!-- whatsapp -->
                         <td style="padding:0 7px; font-size:13px;">
-                          <a href="tel:+447490344639" style="color:#0b3c6d; text-decoration:none;"
-                            onmouseover="this.style.textDecoration='underline';"
-                            onmouseout="this.style.textDecoration='none';">
-                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/phone.png"
-                              style="vertical-align:middle; border:0;">
-                            +44 7490344639
-                          </a>
-                        </td>
+  <a href="https://wa.me/447490344639"
+     target="_blank"
+     style="color:#0b3c6d; text-decoration:none;"
+     onmouseover="this.style.textDecoration='underline';"
+     onmouseout="this.style.textDecoration='none';">
 
-                        <!-- Email -->
-                        <td style="padding:0 7px; font-size:13px;">
-                          <a href="mailto:info@worlddiplomats.org" style="color:#0b3c6d; text-decoration:none;"
-                            onmouseover="this.style.textDecoration='underline';"
-                            onmouseout="this.style.textDecoration='none';">
-                            <img src="https://img.icons8.com/ios-filled/18/0b3c6d/new-post.png"
-                              style="vertical-align:middle; border:0;">
-                            info@worlddiplomats.org
-                          </a>
-                        </td>
+    <img src="https://img.icons8.com/ios-filled/18/0b3c6d/whatsapp.png"
+         style="vertical-align:middle; border:0;">
+
+    +44 7490344639
+  </a>
+</td>
+
+
+                     
 
                         <!-- Website -->
                         <td style="padding:0 7px; font-size:13px;">
