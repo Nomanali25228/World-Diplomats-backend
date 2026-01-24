@@ -192,8 +192,8 @@ module.exports = {
 
         <!-- MAIN EMAIL CONTAINER -->
         <table width="850" cellpadding="0" cellspacing="0"
-          background="https://6e77be9065.imgdist.com/pub/bfra/izj5d9lu/9f3/ib8/46d/logo%20wd.pdf%20%282%29.png" style="
-          background-image:url('https://6e77be9065.imgdist.com/pub/bfra/izj5d9lu/9f3/ib8/46d/logo%20wd.pdf%20%282%29.png');
+          background="https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/laterhead%20bg%20image.jpeg" style="
+          background-image:url('https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/laterhead%20bg%20image.jpeg');
           background-repeat:no-repeat;
           background-position:center top;
           background-size:cover;
