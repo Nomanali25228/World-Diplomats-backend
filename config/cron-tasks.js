@@ -191,7 +191,7 @@ module.exports = {
       <td align="center">
 
         <!-- MAIN EMAIL CONTAINER -->
-        <table width="910" cellpadding="0" cellspacing="0"
+        <table width="850" cellpadding="0" cellspacing="0"
           background="https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/laterhead%20bg%20image.jpeg" style="
           background-image:url('https://6a903f8cfa.imgdist.com/public/users/BeeFree/beefree-4862b855-5df1-4b89-a5ec-bb23e0132b7c/laterhead%20bg%20image.jpeg');
           background-repeat:no-repeat;
