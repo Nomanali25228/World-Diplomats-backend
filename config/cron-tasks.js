@@ -76,7 +76,7 @@ module.exports = {
         if (destination == "Dubai, UAE") {
           desname = "Dubai, UAE";
           country = "Dubai, UAE";
-          CityTour = "Dubai City Tour";
+          CityTour = "Desert Safari";
           venue = "Meydan Hotel, Dubai";
         } else if (destination == "Kuala Lumpur, Malaysia") {
           desname = "Kuala Lumpur, Malaysia";
