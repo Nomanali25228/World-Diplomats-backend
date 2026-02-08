@@ -81,7 +81,7 @@ module.exports = {
         } else if (destination == "Kuala Lumpur, Malaysia") {
           desname = "Kuala Lumpur, Malaysia";
           country = "Kuala Lumpur, Malaysia";
-          CityTour = "Baku City Tour";
+          CityTour = "Batu Caves";
           venue = "Sunway Putra Hotel, Kuala Lumpur";
         } else if (destination == "New York, USA") {
           desname = "New York, USA";
@@ -132,7 +132,7 @@ module.exports = {
         } else if (destination == "Dubai, UAE") {
           _extras = ['Desert Safari'];
         } else if (destination == "Kuala Lumpur, Malaysia") {
-          _extras = ['Batu Caves', 'Petronas Twin Towers', 'Merdeka Square'];
+          _extras = [ 'Petronas Twin Towers', 'Merdeka Square'];
         } else if (destination == "London, UK") {
           _extras = [];
         } else if (destination == "Riyadh, Saudi Arabia") {
